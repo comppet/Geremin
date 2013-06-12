@@ -10,7 +10,7 @@ class PDOMongo{
 	public $connection;
 	public $collection;
 	
-	public function __construct($host = 'localhost:27017', $database = null, $username = null, $password = null){
+	public function __construct($host = 'localhost:27017', $database = null, $username = null, $password = null, $dbauth = 'admin'){
 		try{
 			$serverString = "mongodb://";
 			if(is_null($username) && is_null($database)){
@@ -20,7 +20,7 @@ class PDOMongo{
 			else if(is_null($username))
 				$serverString .= $host . "/" . $database;
 			else
-				$serverString .= $username . ":" . $password . "@" . $host . "/" . $database;
+				$serverString .= $username . ":" . $password . "@" . $host . "/" . $dbauth;
 			$this->connection = new MongoClient($serverString);
 			self::setDatabase($database);
 		}
