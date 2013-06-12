@@ -10,17 +10,14 @@ class PDOMongo{
 	public $connection;
 	public $collection;
 	
-	public function __construct($host = 'localhost:27017', $database = null, $username = null, $password = null, $dbauth = 'admin'){
+	public function __construct($host = 'localhost:27017', $database = null, $dbauth = 'admin', $username = null, $password = null){
 		try{
 			$serverString = "mongodb://";
-			if(is_null($username) && is_null($database)){
-				$serverString .= $host;
-				return;
-			}
-			else if(is_null($username))
-				$serverString .= $host . "/" . $database;
+			if(is_null($username) )
+				$serverString .= $host . "/" . $dbauth;
 			else
 				$serverString .= $username . ":" . $password . "@" . $host . "/" . $dbauth;
+			
 			$this->connection = new MongoClient($serverString);
 			self::setDatabase($database);
 		}
