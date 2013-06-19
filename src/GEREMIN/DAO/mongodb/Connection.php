@@ -9,16 +9,17 @@ namespace GEREMIN\DAO\mongodb;
 
 class Connection {
   //configuration
+  private static $host = 'localhost';
   private static $database = 'geremin';
   private static $username = 'geremin';
   private static $password = '123456';
-  private static $host = 'localhost';
+  private static $dbauth = 'admin'; //default value
   private static $instance = null;
   private $con = null;
 
   //Connect to the database
   private function __construct(){
-    $this->con = new PDOMongo(self::$host,self::$database,'admin',self::$username,self::$password);
+    $this->con = new PDOMongo(self::$host,self::$database,self::$dbauth,self::$username,self::$password);
   }
 
   public static function Instance() {

@@ -5,7 +5,6 @@
  * Github: jacksongoulart
  */
 
-
 namespace GEREMIN\DAO\mongodb;
 
 use GEREMIN\DAO\IUsuarioDAO,
@@ -13,58 +12,36 @@ use GEREMIN\DAO\IUsuarioDAO,
 
 class UsuarioDAO implements IUsuarioDAO{
 
-	public function create(Usuario $input){
+	private $pdo;
+
+	public function __construct(){
 		try{
-			$stm = Connection::Instance()->get();
-			$stm->setCollection('user');
-			$stm->insert($input);
+			$this->pdo = Connection::Instance()->get();
+			$this->pdo->setCollection('user');
 		}
 		catch(MongoException $ex){
-			throw new Exception("Ao criar usuário: ".$ex->getMessage());
+			throw new Exception("Erro de conexão: ".$ex->getMessage());
 		}
 	}
 
+	public function create(Usuario $input){
+		$this->pdo->insert($input);
+	}
+
     public function find($login){
-    	try{
-			$stm = Connection::Instance()->get();
-			$stm->setCollection('user');
-			return $stm->get('login',$login);
-		}
-		catch(MongoException $ex){
-			throw new Exception("Ao procurar [GET] Usuario: ".$ex->getMessage());
-		}
+		return $this->pdo->get('login',$login);
     }
 
     public function findAll(){
-    	try{
-	    	$stm = Connection::Instance()->get();
-			$stm->setCollection('user');
-			$stm->getAll();
-		}
-		catch(MongoException $ex){
-			throw new Exception("Ao procurar [GETALL] Usuario: ".$ex->getMessage());
-		}
-
+		return $this->pdo->getAll();
     }
 
     public function update(Usuario $usuario){
-    	try{
-	    	$stm = Connection::Instance()->get();
-			$stm->setCollection('user');
-		}
-		catch(MongoException $ex){
-			throw new Exception("Ao atualizar Usuario: ".$ex->getMessage());
-		}
+    	//return $this->pdo->update();
     }
 
     public function delete(Usuario $usuario){
-    	try{
-			$stm = Connection::Instance()->get();
-			$stm->setCollection('user');
-		}
-		catch(MongoException $ex){
-			throw new Exception("Ao deletar Usuario: ".$ex->getMessage());
-		}
+    	//$this->pdo->delete();
     }
 }
 
