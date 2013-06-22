@@ -2,15 +2,15 @@
 
 namespace GEREMIN\DAO;
 
-use GEREMIN\Model\Usuario;
+use GEREMIN\Model\Minicurso;
 
-interface IUsuarioDAO{
+interface IMinicursoDAO{
 	/**
      * Insere o novo Usuario no BD
      * @param Usuario $Usuario
      * @throws DAOException
      */
-    public function create(Usuario $usuario);
+    public function create(Minicurso $minicurso);
 
     /**
      * Recupera o Usuario a partir do login
@@ -18,7 +18,7 @@ interface IUsuarioDAO{
      * @return Usuario
      * @throws DAOException
      */
-    public function find(Usuario $usuario);
+    public function find(Minicurso $minicurso);
 
     /**
      * Recupera todas as Usuarioes
@@ -32,22 +32,20 @@ interface IUsuarioDAO{
      * @param Usuario $usuario
      * @throws DAOException
      */
-    public function update(Usuario $usAnterior, Usuario $usAtual);
+    public function update(Minicurso $minAnterior, Minicurso $minAtual);
 
     /**
      * Remove o Usuario do BD
      * @param type $idate(format)
      * @throws DAOException
      */
-    public function delete(Usuario $usuario);
+    public function delete(Minicurso $minicurso);
 
     /**
      * Confere se o Usuario existe no BD
      * @param type $login, type $senha
      * @throws DAOException
      */
-
-    public function login(Usuario $usuario);
 }
 
 ?>

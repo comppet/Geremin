@@ -11,9 +11,11 @@ abstract class Factory{
 
 	const MongoDB = 1;
 
+	public abstract function getCertificadoDAO();
+
 	public abstract function getUsuarioDAO();
 
-	public abstract function getCertificadoDao();
+	public abstract function getMinicursoDAO();
 
 	public static function getFactory($factory) {
 		switch ($factory){

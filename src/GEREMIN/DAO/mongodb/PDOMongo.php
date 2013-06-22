@@ -47,40 +47,57 @@ class PDOMongo{
 
 	public function setCollection($input){ $this->collection = $this->database->selectCollection($input); }
 
-	public function insert($f){ $this->collection->insert($f); }
+	public function find($input){
+		$mongoCursor = $this->collection->find($input);
+		return self::cursorToArray($mongoCursor);
+	}
 
-	public function update($f1, $f2){ $this->collection->update($f1, $f2); }
+	public function insert($input){ $this->collection->insert($input); }
+
+	public function count($input){ return $this->collection->count($input);  }
+
+	public function update($input1, $input2){ $this->collection->update($input1, $input2); }
 
 	public function ensureIndex($args){ return $this->collection->ensureIndex($args); }
-
-	public function createArray($index, $value){
-		if($index == 'id')
-			return array('_id' => new MongoID($value));
-		else
-			return array($index => $value);
-	}
  
-    public function get($index, $value){
-        $mongoCursor = $this->collection->find(self::createArray($index, $value));
-        $resultSet = array();
-        $index = 0;
-        while( $mongoCursor->hasNext()){
-            $resultSet[$index] = $mongoCursor->getNext();
-            $index++;
-        }
-        return $resultSet;
-    }
- 
-    public function getAll(){
+    public function findAll(){
         $mongoCursor = $this->collection->find();
-        return $mongoCursor;
+        return self::cursorToArray($mongoCursor);
     }
  
     public function delete($f, $one = FALSE){
         $c = $this->collection->remove($f, $one);
         return $c;
     }
+
+    private static function cursorToArray($mongoCursor) {
+    	$resultSet = array();
+    	$index = 0;
+        while( $mongoCursor->hasNext()){
+            $resultSet[$index] = $mongoCursor->getNext();
+            $index++;
+        }
+        return $resultSet;
+    }
 }
+
+	// public function createArray($index, $value){
+	// 	if($index == 'id')
+	// 		return array('_id' => new MongoID($value));
+	// 	else
+	// 		return array($index => $value);
+	// }
+
+    // public function get($index, $value){
+    //     $mongoCursor = $this->collection->find(self::createArray($index, $value));
+    //     $resultSet = array();
+    //     $index = 0;
+    //     while( $mongoCursor->hasNext()){
+    //         $resultSet[$index] = $mongoCursor->getNext();
+    //         $index++;
+    //     }
+    //     return $resultSet;
+    // }
  #
  # Exemplo de uso do PDOMongo passando o host e o banco de dados
  #

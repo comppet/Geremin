@@ -1,4 +1,4 @@
-	<?php
+<?php
 
     # Usado para carregar os arquivos de acordo com os namespaces (std PSR-0)
     # (https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
