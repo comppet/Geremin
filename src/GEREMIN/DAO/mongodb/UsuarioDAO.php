@@ -25,45 +25,46 @@ class UsuarioDAO implements IUsuarioDAO{
 	}
 
 	public function create(Usuario $usuario){
-		$this->pdo->insert(self::usuarioArray($usuario));
+		$this->pdo->insert(self::createArray($usuario));
 	}
 
     public function find(Usuario $usuario){
-		return $this->pdo->find(self::emailUsuarioArray($usuario));
+		return $this->pdo->get('_id', $usuario->getEmail(), TRUE);
     }
 
     public function findAll(){
-		return $this->pdo->findAll();
+		return $this->pdo->getAll();
     }
 
     public function update(Usuario $usAnterior, Usuario $usAtual){
-    	return $this->pdo->update(self::usuarioArray($usAnterior), self::usuarioArray($usAtual));
+    	return $this->pdo->update(self::createArray($usAnterior), self::createArray($usAtual));
     }
 
     public function delete(Usuario $usuario){
-    	$this->pdo->remove(self::emailUsuarioArray($usuario));
+    	$this->pdo->delete('_id', $usuario->getEmail());
     }
 
     public function login(Usuario $usuario){
-        return $this->pdo->find(self::LoginArray($usuario));
+        $login = $this->find($usuario);
+        if($login['senha'] == self::hash($usuario->getSenha())){
+            $login['senha'] = $usuario->getSenha();
+            return $login;
+        }
+        return null;
     }
 
-    private static function loginArray(Usuario $usuario){
-        return array('email' => $usuario->getEmail(), 'senha' => $usuario->getSenha());
-    }
-
-    private static function emailUsuarioArray(Usuario $usuario){
-        return $this->pdo->createArray('e-mail',$usuario->getEmail());
-    }
-
-    private static function usuarioArray(Usuario $usuario){
+    private static function createArray(Usuario $usuario){
         return array(
+                '_id' => $usuario->getEmail(),
                 'nome' => $usuario->getNome(),
-                'email' => $usuario->getEmail(),
-                'senha' => $usuario->getSenha(),
+                'senha' => self::hash($usuario->getSenha()),
                 'nivel' => $usuario->getNivel(),
                 'cpf' => $usuario->getCpf()
                 );
+    }
+
+    private static function hash($senha){
+        return hash('md5',$senha);
     }
 }
 

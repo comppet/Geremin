@@ -19,7 +19,7 @@ class Connection {
 
   //Connect to the database
   private function __construct(){
-    $this->con = new PDOMongo(self::$host,self::$database,self::$dbauth,self::$username,self::$password);
+    $this->con = new PDOMongo(self::$host,self::$database,self::$username,self::$password,self::$dbauth);
   }
 
   public static function Instance() {
