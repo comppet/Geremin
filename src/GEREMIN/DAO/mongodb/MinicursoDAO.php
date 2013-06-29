@@ -30,11 +30,11 @@ class MinicursoDAO implements IMinicursoDAO{
 	}
 
     public function find(Minicurso $minicurso){
-		return $this->pdo->find(self::descMinicursoArray($minicurso));
+		return $this->pdo->get(self::descMinicursoArray($minicurso), null, TRUE);
     }
 
     public function findAll(){
-		return $this->pdo->findAll();
+		return $this->pdo->getAll();
     }
 
     public function update(Minicurso $minAnterior, Minicurso $minAtual){
@@ -42,7 +42,7 @@ class MinicursoDAO implements IMinicursoDAO{
     }
 
     public function delete(Minicurso $minicurso){
-    	$this->pdo->remove(self::descMinicursoArray($minicurso));
+    	$this->pdo->remove(self::descMinicursoArray($minicurso), TRUE);
     }
 
     public function newParticipante(Usuario $usuario){
@@ -62,7 +62,9 @@ class MinicursoDAO implements IMinicursoDAO{
     }
 
     private static function descMinicursoArray(Minicurso $minicurso){
-    	return array('nome' => $minicurso->getNome(), 'periodo' => $minicurso->getPeriodo());
+    	return array('nome' => $minicurso->getNome(),
+                    'periodo' => $minicurso->getPeriodo()
+                    );
     }
 }
 
